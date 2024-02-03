@@ -1,0 +1,3 @@
+[submodule "vendor/bare"]
+	path = vendor/bare
+	url = git@github.com:holepunchto/bare.git
