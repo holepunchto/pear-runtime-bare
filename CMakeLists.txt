@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.25)
 
-set(name bare_distributable)
+set(name pear-runtime)
 
 project(
   ${name}
@@ -23,17 +23,9 @@ set_target_properties(
   POSITION_INDEPENDENT_CODE ON
 )
 
-add_bare_bundle(
-  ENTRY src/main.js
-  OUT src/main.bundle.h
-  IMPORT_MAP package.json
-  TARGET c
-)
-
 target_sources(
   ${name}_obj
   PRIVATE
-    src/main.bundle.h
     src/main.c
 )
 
