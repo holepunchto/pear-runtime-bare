@@ -1,12 +1,6 @@
 {
   "private": true,
   "name": "pear-runtime-bootstrap",
-  "workspaces": [
-    "vendor/*"
-  ],
-  "imports": {
-    "fs": "bare-fs"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/holepunchto/pear-runtime-bootstrap.git"
@@ -16,8 +10,5 @@
   "bugs": {
     "url": "https://github.com/holepunchto/pear-runtime-bootstrap/issues"
   },
-  "homepage": "https://github.com/holepunchto/pear-runtime-bootstrap#readme",
-  "dependencies": {
-    "bare-fs": "^2.0.0"
-  }
+  "homepage": "https://github.com/holepunchto/pear-runtime-bootstrap#readme"
 }
