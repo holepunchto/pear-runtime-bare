@@ -3,7 +3,10 @@
 #include <uv.h>
 #include <stdlib.h>
 
-// #include <stdio.h>
+#ifdef __linux__
+#include <string.h>
+#include <unistd.h>
+#endif
 
 #define PATH_MAX_STRING_SIZE 4096
 
