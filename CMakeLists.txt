@@ -14,6 +14,8 @@ bare_target(target)
 
 add_subdirectory(vendor/bare EXCLUDE_FROM_ALL)
 
+add_subdirectory(vendor/libpath EXCLUDE_FROM_ALL)
+
 add_library(${name}_obj OBJECT)
 
 set_target_properties(
@@ -35,7 +37,13 @@ target_include_directories(
     $<TARGET_PROPERTY:bare,INTERFACE_INCLUDE_DIRECTORIES>
 )
 
-add_executable(${name}_bin $<TARGET_OBJECTS:${name}_obj>)
+target_link_libraries(
+  ${name}_obj
+  PUBLIC
+    path
+)
+
+add_executable(${name}_bin)
 
 set_target_properties(
   ${name}_bin
@@ -46,7 +54,10 @@ set_target_properties(
 
 target_link_libraries(
   ${name}_bin
+  PUBLIC
+    ${name}_obj
   PRIVATE
+    path_static
     $<LINK_LIBRARY:WHOLE_ARCHIVE,bare_static>
 )
 
