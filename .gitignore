@@ -5,6 +5,7 @@ prebuilds
 sandbox
 corestore
 install
+out
 *.js.h
 *.bundle
 *.bundle.h
