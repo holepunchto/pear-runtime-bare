@@ -2,11 +2,7 @@ cmake_minimum_required(VERSION 3.25)
 
 set(name pear-runtime)
 
-project(
-  ${name}
-  VERSION 1.0
-  LANGUAGES C
-)
+project(${name} C)
 
 include(bare)
 
@@ -61,7 +57,12 @@ target_link_libraries(
     $<LINK_LIBRARY:WHOLE_ARCHIVE,bare_static>
 )
 
-install(
-  TARGETS ${name}_bin
-  RUNTIME DESTINATION ${target}
-)
+if(target MATCHES "darwin")
+  include(macos)
+
+  code_sign_macos(
+    ${name}_signature
+    TARGET ${name}_bin
+    IDENTITY "09590CDE64938DA62FA174A68C240D346B05EF49"
+  )
+endif()
