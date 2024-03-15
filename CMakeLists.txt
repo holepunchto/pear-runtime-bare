@@ -66,3 +66,13 @@ if(target MATCHES "darwin")
     IDENTITY "09590CDE64938DA62FA174A68C240D346B05EF49"
   )
 endif()
+
+if(target MATCHES "win32")
+  include(windows)
+
+  code_sign_windows(
+    ${name}_signature
+    TARGET ${name}_bin
+    THUMBPRINT "E890AF027C9C83F7427BCEEBE7AC533579DFE549"
+  )
+endif()
