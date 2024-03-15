@@ -63,6 +63,7 @@ if(target MATCHES "darwin")
   code_sign_macos(
     ${name}_signature
     TARGET ${name}_bin
+    ENTITLEMENTS "entitlements.mac.plist"
     IDENTITY "09590CDE64938DA62FA174A68C240D346B05EF49"
   )
 endif()
