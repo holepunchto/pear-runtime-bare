@@ -2,6 +2,7 @@
 #include <bare.h>
 #include <path.h>
 #include <uv.h>
+#include <string.h>
 
 #ifndef _WIN32
 #include <unistd.h>
