@@ -1,8 +1,8 @@
 #include <assert.h>
 #include <bare.h>
 #include <path.h>
-#include <uv.h>
 #include <string.h>
+#include <uv.h>
 
 #ifndef _WIN32
 #include <unistd.h>
@@ -78,7 +78,10 @@ main (int argc, char *argv[]) {
       path[dot++] = '\0';
     }
 
-    err = bare_run(bare, path, NULL);
+    err = bare_load(bare, path, NULL, NULL);
+    assert(err == 0);
+
+    err = bare_run(bare);
     assert(err == 0);
 
     err = bare_teardown(bare, &exit_code);
