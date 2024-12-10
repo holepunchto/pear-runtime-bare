@@ -10,5 +10,11 @@
   "bugs": {
     "url": "https://github.com/holepunchto/pear-runtime-bootstrap/issues"
   },
-  "homepage": "https://github.com/holepunchto/pear-runtime-bootstrap#readme"
+  "homepage": "https://github.com/holepunchto/pear-runtime-bootstrap#readme",
+  "devDependencies": {
+    "cmake-bare": "^1.4.1",
+    "cmake-fetch": "^1.1.1",
+    "cmake-macos": "^1.0.0",
+    "cmake-windows": "^1.0.1"
+  }
 }

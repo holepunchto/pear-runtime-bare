@@ -1,16 +1,18 @@
 cmake_minimum_required(VERSION 3.25)
 
+find_package(cmake-bare REQUIRED PATHS node_modules/cmake-bare)
+find_package(cmake-fetch REQUIRED PATHS node_modules/cmake-fetch)
+find_package(cmake-macos REQUIRED PATHS node_modules/cmake-macos)
+find_package(cmake-windows REQUIRED PATHS node_modules/cmake-windows)
+
 set(name pear-runtime)
 
 project(${name} C)
 
-include(bare)
+fetch_package("github:holepunchto/bare@1.12.2")
+fetch_package("github:holepunchto/libpath")
 
 bare_target(target)
-
-add_subdirectory(vendor/bare EXCLUDE_FROM_ALL)
-
-add_subdirectory(vendor/libpath EXCLUDE_FROM_ALL)
 
 add_library(${name}_obj OBJECT)
 
@@ -58,19 +60,13 @@ target_link_libraries(
 )
 
 if(target MATCHES "darwin")
-  include(macos)
-
   code_sign_macos(
     ${name}_signature
     TARGET ${name}_bin
     ENTITLEMENTS "entitlements.mac.plist"
     IDENTITY "09590CDE64938DA62FA174A68C240D346B05EF49"
   )
-endif()
-
-if(target MATCHES "win32")
-  include(windows)
-
+elseif(target MATCHES "win32")
   code_sign_windows(
     ${name}_signature
     TARGET ${name}_bin
