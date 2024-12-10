@@ -24,7 +24,7 @@ main (int argc, char *argv[]) {
 
   do {
     bare_t *bare;
-    err = bare_setup(uv_default_loop(), platform, NULL, argc, argv, NULL, &bare);
+    err = bare_setup(uv_default_loop(), platform, NULL, argc, (const char **) argv, NULL, &bare);
     assert(err == 0);
 
     char path[4096];
@@ -44,7 +44,7 @@ main (int argc, char *argv[]) {
     len = 4096;
 
     err = path_join(
-      (const char *[]){path, "..", "..", "..", "..", NULL},
+      (const char *[]) {path, "..", "..", "..", "..", NULL},
       path,
       &len,
       path_behavior_system
