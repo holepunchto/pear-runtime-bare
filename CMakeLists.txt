@@ -14,6 +14,10 @@ fetch_package("github:holepunchto/libpath")
 
 bare_target(target)
 
+if(target MATCHES "win32")
+  add_compile_options(/MT$<$<CONFIG:Debug>:d>)
+endif()
+
 add_library(${name}_obj OBJECT)
 
 set_target_properties(
