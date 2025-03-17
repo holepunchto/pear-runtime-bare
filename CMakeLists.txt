@@ -9,8 +9,9 @@ set(name pear-runtime)
 
 project(${name} C)
 
-fetch_package("github:holepunchto/bare@1.15.2")
+fetch_package("github:holepunchto/bare@1.16.2")
 fetch_package("github:holepunchto/libpath")
+fetch_package("github:holepunchto/librlimit")
 
 bare_target(target)
 
@@ -43,6 +44,7 @@ target_link_libraries(
   ${name}_obj
   PUBLIC
     path
+    rlimit
 )
 
 add_executable(${name}_bin)
@@ -60,6 +62,7 @@ target_link_libraries(
     ${name}_obj
   PRIVATE
     path_static
+    rlimit_static
     $<LINK_LIBRARY:WHOLE_ARCHIVE,bare_static>
 )
 

@@ -1,6 +1,8 @@
 #include <assert.h>
 #include <bare.h>
 #include <path.h>
+#include <rlimit.h>
+#include <stddef.h>
 #include <string.h>
 #include <uv.h>
 
@@ -13,6 +15,9 @@
 int
 main (int argc, char *argv[]) {
   int err;
+
+  err = rlimit_set(rlimit_open_files, rlimit_infer);
+  assert(err == 0);
 
   argv = uv_setup_args(argc, argv);
 
