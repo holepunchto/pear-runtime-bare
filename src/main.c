@@ -2,6 +2,7 @@
 #include <bare.h>
 #include <path.h>
 #include <rlimit.h>
+#include <signal.h>
 #include <stddef.h>
 #include <string.h>
 #include <uv.h>
@@ -15,6 +16,10 @@
 int
 main (int argc, char *argv[]) {
   int err;
+
+#ifdef SIGPIPE
+  signal(SIGPIPE, SIG_IGN);
+#endif
 
   err = rlimit_set(rlimit_open_files, rlimit_infer);
   assert(err == 0);
