@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.25)
+cmake_minimum_required(VERSION 3.31)
 
 find_package(cmake-bare REQUIRED PATHS node_modules/cmake-bare)
 find_package(cmake-fetch REQUIRED PATHS node_modules/cmake-fetch)
@@ -9,7 +9,7 @@ set(name pear-runtime)
 
 project(${name} C)
 
-fetch_package("github:holepunchto/bare@1.19.0")
+fetch_package("github:holepunchto/bare@1.20.1")
 fetch_package("github:holepunchto/libpath")
 fetch_package("github:holepunchto/librlimit")
 
