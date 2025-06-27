@@ -13,6 +13,44 @@
 
 #define RESTART_EXIT_CODE 75
 
+static uv_sem_t bare__platform_ready;
+static uv_async_t bare__platform_shutdown;
+static js_platform_t *bare__platform;
+
+static void
+bare__on_platform_shutdown (uv_async_t *handle) {
+  uv_close((uv_handle_t *) handle, NULL);
+}
+
+static void
+bare__on_platform_thread (void *data) {
+  int err;
+
+  uv_loop_t loop;
+  err = uv_loop_init(&loop);
+  assert(err == 0);
+
+  err = uv_async_init(&loop, &bare__platform_shutdown, bare__on_platform_shutdown);
+  assert(err == 0);
+
+  err = js_create_platform(&loop, NULL, &bare__platform);
+  assert(err == 0);
+
+  uv_sem_post(&bare__platform_ready);
+
+  err = uv_run(&loop, UV_RUN_DEFAULT);
+  assert(err == 0);
+
+  err = js_destroy_platform(bare__platform);
+  assert(err == 0);
+
+  err = uv_run(&loop, UV_RUN_DEFAULT);
+  assert(err == 0);
+
+  err = uv_loop_close(&loop);
+  assert(err == 0);
+}
+
 int
 main (int argc, char *argv[]) {
   int err;
@@ -24,17 +62,26 @@ main (int argc, char *argv[]) {
   err = rlimit_set(rlimit_open_files, rlimit_infer);
   assert(err == 0);
 
+  uv_loop_t *loop = uv_default_loop();
+
   argv = uv_setup_args(argc, argv);
 
-  js_platform_t *platform;
-  err = js_create_platform(uv_default_loop(), NULL, &platform);
+  err = uv_sem_init(&bare__platform_ready, 0);
   assert(err == 0);
+
+  uv_thread_t thread;
+  err = uv_thread_create(&thread, bare__on_platform_thread, NULL);
+  assert(err == 0);
+
+  uv_sem_wait(&bare__platform_ready);
+
+  uv_sem_destroy(&bare__platform_ready);
 
   int exit_code;
 
   do {
     bare_t *bare;
-    err = bare_setup(uv_default_loop(), platform, NULL, argc, (const char **) argv, NULL, &bare);
+    err = bare_setup(loop, bare__platform, NULL, argc, (const char **) argv, NULL, &bare);
     assert(err == 0);
 
     char path[4096];
@@ -44,7 +91,7 @@ main (int argc, char *argv[]) {
     assert(err == 0);
 
     uv_fs_t req;
-    err = uv_fs_realpath(uv_default_loop(), &req, path, NULL);
+    err = uv_fs_realpath(loop, &req, path, NULL);
     assert(err == 0);
 
     strcpy(path, (char *) req.ptr);
@@ -78,7 +125,7 @@ main (int argc, char *argv[]) {
     path[len++] = 'e';
     path[len++] = '\0';
 
-    err = uv_fs_access(uv_default_loop(), &req, path, F_OK, NULL);
+    err = uv_fs_access(loop, &req, path, F_OK, NULL);
 
     uv_fs_req_cleanup(&req);
 
@@ -98,11 +145,13 @@ main (int argc, char *argv[]) {
     assert(err == 0);
   } while (exit_code == RESTART_EXIT_CODE);
 
-  err = js_destroy_platform(platform);
+  err = uv_loop_close(loop);
   assert(err == 0);
 
-  err = uv_run(uv_default_loop(), UV_RUN_ONCE);
+  err = uv_async_send(&bare__platform_shutdown);
   assert(err == 0);
+
+  uv_thread_join(&thread);
 
   return exit_code;
 }
