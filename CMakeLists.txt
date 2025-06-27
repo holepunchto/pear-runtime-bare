@@ -9,7 +9,7 @@ set(name pear-runtime)
 
 project(${name} C)
 
-fetch_package("github:holepunchto/bare@1.20.1")
+fetch_package("github:holepunchto/bare@1.20.2")
 fetch_package("github:holepunchto/libpath")
 fetch_package("github:holepunchto/librlimit")
 
