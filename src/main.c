@@ -138,10 +138,10 @@ main (int argc, char *argv[]) {
     err = bare_load(bare, path, NULL, NULL);
     assert(err == 0);
 
-    err = bare_run(bare);
+    err = bare_run(bare, UV_RUN_DEFAULT);
     assert(err == 0);
 
-    err = bare_teardown(bare, &exit_code);
+    err = bare_teardown(bare, UV_RUN_DEFAULT, &exit_code);
     assert(err == 0);
   } while (exit_code == RESTART_EXIT_CODE);
 
