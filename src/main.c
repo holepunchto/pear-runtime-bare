@@ -64,6 +64,8 @@ main (int argc, char *argv[]) {
 
   uv_loop_t *loop = uv_default_loop();
 
+  uv_disable_stdio_inheritance();
+
   argv = uv_setup_args(argc, argv);
 
   err = uv_sem_init(&bare__platform_ready, 0);
