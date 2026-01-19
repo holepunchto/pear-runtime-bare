@@ -14,25 +14,25 @@ fetch_package("github:holepunchto/libdynload")
 
 bare_target(target)
 
-add_library(pear_entry SHARED)
+add_library(pear_runtime_entry SHARED)
 
 set_target_properties(
-  pear_entry
+  pear_runtime_entry
   PROPERTIES
   C_STANDARD 11
   POSITION_INDEPENDENT_CODE ON
-  OUTPUT_NAME pear.1.0.0
+  OUTPUT_NAME pear-runtime.1.0.0
   PREFIX ""
 )
 
 target_sources(
-  pear_entry
+  pear_runtime_entry
   PRIVATE
     src/entry.c
 )
 
 target_link_libraries(
-  pear_entry
+  pear_runtime_entry
   PUBLIC
     $<LINK_LIBRARY:WHOLE_ARCHIVE,bare_static>
   PRIVATE
@@ -67,16 +67,16 @@ install(
 )
 
 if(target MATCHES "darwin")
-  code_sign_macos(
-    ${name}_signature
-    TARGET ${name}_bin
-    ENTITLEMENTS "entitlements.mac.plist"
-    IDENTITY "09590CDE64938DA62FA174A68C240D346B05EF49"
-  )
+  # code_sign_macos(
+  #   pear_runtime_signature
+  #   TARGET pear_runtime
+  #   ENTITLEMENTS "entitlements.mac.plist"
+  #   IDENTITY "09590CDE64938DA62FA174A68C240D346B05EF49"
+  # )
 elseif(target MATCHES "win32")
   code_sign_windows(
-    ${name}_signature
-    TARGET ${name}_bin
+    pear_runtime_signature
+    TARGET pear_runtime
     THUMBPRINT "E890AF027C9C83F7427BCEEBE7AC533579DFE549"
   )
 endif()
