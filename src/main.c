@@ -25,7 +25,7 @@ pear__resolve(pear_main_t *result) {
 
   char dl[4096];
   len = sizeof(dl);
-  err = dynload_resolve("pear", prefix, dl, &len);
+  err = dynload_resolve("pear-runtime", prefix, dl, &len);
   if (err < 0) return err;
 
   uv_lib_t lib;
